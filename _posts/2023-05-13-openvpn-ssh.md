@@ -1,9 +1,11 @@
 ---
 title: OpenVPN + SSH
-author: devops
 date: 2023-05-13 11:00:00 +0300
 categories: [Блог, Инструкции]
-tags: [devops инструкции]
+tags: [Linux, vpn, ssh]
+pin: false 
+math: true
+mermaid: true
 ---
 
 # Как прокинуть трафик из VPS на свой сервер ?

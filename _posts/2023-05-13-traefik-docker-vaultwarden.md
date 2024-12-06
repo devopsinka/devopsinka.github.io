@@ -1,9 +1,11 @@
 ---
 title: Traefik + Docker + Vaultwarden
-author: devops
 date: 2023-05-13 11:00:00 +0300
 categories: [Блог, Инструкции]
-tags: [devops инструкции docker]
+tags: [Linux, vpn, ssh, docker, traefik]
+pin: false 
+math: true
+mermaid: true
 ---
 
 
