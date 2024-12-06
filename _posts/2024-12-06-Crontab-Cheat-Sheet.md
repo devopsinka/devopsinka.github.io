@@ -36,7 +36,8 @@ Crontab - это мощная утилита для Unix-подобных опе
 
 ## Разница между Cron, Crontab и Cron Job
 
-The provided table illustrates the key elements related to scheduling tasks using cron in Linux systems.
+Приведенная таблица иллюстрирует ключевые элементы, связанные с планированием задач с использованием cron в системах Linux.
+
 
 | Element | Linux Name | Meaning                                                                                                                                                             |
 |---------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -46,21 +47,21 @@ The provided table illustrates the key elements related to scheduling tasks usin
 
 ### Cron
 
-Cron is the name of the system daemon responsible for executing scheduled tasks in Unix-like operating systems. It runs in the background and periodically checks the system's crontab files to determine which tasks need to be executed.
+Cron - это название системного демона, ответственного за выполнение запланированных задач в Unix-подобных операционных системах. Он работает в фоновом режиме и периодически проверяет системные файлы crontab, чтобы определить, какие задачи необходимо выполнить.
 
 ### Crontab
 
-Crontab, short for "cron tables," refers to the file or files that contain the scheduled task definitions for individual users. Each user has their own crontab file where they can define the timing and commands or scripts to be executed at specific intervals. Crontab files are used to configure and manage scheduled tasks for each user.
+Crontab, сокращение от "cron-таблицы", относится к файлу или файлам, содержащим определения запланированных задач для отдельных пользователей. У каждого пользователя есть свой собственный файл crontab, в котором он может определить время и команды или сценарии, которые должны выполняться через определенные промежутки времени. Файлы Crontab используются для настройки запланированных задач и управления ими для каждого пользователя.
 
 ### Cron Job
 
-A cron job refers to a specific task or command that is scheduled to run at a designated time or interval using the crontab file. Users define their cron jobs in their crontab files by specifying the timing and the command or script to be executed. Each cron job is a separate entry within the crontab file, allowing users to schedule multiple tasks according to their specific requirements.
+Задание cron относится к конкретной задаче или команде, выполнение которой запланировано в определенное время или с определенным интервалом с помощью файла crontab. Пользователи определяют свои задания cron в своих файлах crontab, указывая время и команду или сценарий, которые должны выполняться. Каждое задание cron представляет собой отдельную запись в файле crontab, позволяющую пользователям планировать несколько задач в соответствии с их конкретными требованиями.
 
-In summary, Cron is the system daemon responsible for executing scheduled tasks, Crontab is the file used to define scheduled tasks for individual users, and Cron Job refers to a specific task scheduled using the crontab file.
+Таким образом, Cron - это системный демон, ответственный за выполнение запланированных задач, Crontab - это файл, используемый для определения запланированных задач для отдельных пользователей, а Cron Job относится к конкретной задаче, запланированной с использованием файла crontab.
 
 ## Crontab Синтаксис
 
-To create and manage cron jobs using crontab, you need to understand the syntax. Each line in a crontab file represents a cron job and consists of six fields separated by spaces. The fields denote the scheduling details, as follows:
+Чтобы создавать задания cron и управлять ими с помощью crontab, вам необходимо понимать синтаксис. Каждая строка в файле crontab представляет задание cron и состоит из шести полей, разделенных пробелами. Поля обозначают детали планирования следующим образом:
 
 ```bash
 * * * * * command_to_be_executed
@@ -73,11 +74,11 @@ To create and manage cron jobs using crontab, you need to understand the syntax.
 └──────────────────── Minute (0 - 59)
 ```
 
-The code snippet below represents the contents of the `/etc/crontab` file. This file is a system-wide crontab file in Linux that contains scheduled tasks for various users. It starts with the definition of the shell (`/bin/bash`) and the system's search path (`PATH`).
+Приведенный ниже фрагмент кода представляет содержимое файла /etc/crontab. Этот файл является общесистемным файлом crontab в Linux, который содержит запланированные задачи для различных пользователей. Все начинается с определения оболочки (`/bin/bash`) и системного пути поиска (`PATH`).
 
-The `MAILTO` variable specifies the recipient for any command output or errors. The subsequent lines include commented examples that demonstrate the syntax for defining cron jobs. Each line shows the order of time units (minute, hour, day of the month, month, and day of the week) followed by the user and command to be executed at the specified time.
+Переменная `MAILTO` указывает получателя для любых выходных данных команды или ошибок. В последующих строках приведены примеры с комментариями, демонстрирующие синтаксис для определения заданий cron. Каждая строка показывает порядок следования единиц измерения времени (минута, час, день месяца, месяц и день недели), за которыми следует пользователь, и команды, которые должны быть выполнены в указанное время.
 
-This file serves as a reference and guide for configuring cron jobs in a Linux system.
+Этот файл служит справочным материалом и руководством по настройке заданий cron в системе Linux.
 
 ```bash
 cat /etc/crontab
@@ -98,75 +99,75 @@ MAILTO=root
 # *  *  *  *  * user-name  command to be executed
 ```
 
-Each field can be specified as a single value, a comma-separated list of values, a range, or an asterisk (*) to denote all possible values. Here are some examples:
+Каждое поле может быть задано в виде отдельного значения, списка значений, разделенных запятыми, диапазона или звездочки (*) для обозначения всех возможных значений. Вот несколько примеров:
 
-- `*` indicates all possible values for that field.
-- `5,10,15` denotes the values 5, 10, and 15.
-- `1-5` represents a range from 1 to 5.
+- `*` указывает все возможные значения для этого поля.
+- `5,10,15` обозначает значения 5, 10 и 15.
+- `1-5` представляет собой диапазон от 1 до 5.
 
 ## Практические примеры
 
 ### Пример 1: Запуск сценария каждый час
 
-To schedule a script to run every hour, use the following crontab entry:
+Чтобы запланировать запуск сценария каждый час, используйте следующую запись в crontab:
 
 ```plaintext
 0 * * * * /path/to/script.sh
 ```
 
-This executes the script located at `/path/to/script.sh` at the start of every hour.
+При этом в начале каждого часа выполняется скрипт, расположенный по адресу `/path/to/script.sh`.
 
 ### Пример 2: Запуска сценария каждый день в определенное время
 
-To schedule a script to run every day at a specific time, use the following crontab entry:
+Чтобы запланировать запуск скрипта каждый день в определенное время, используйте следующую запись в crontab:
 
 ```plaintext
 30 9 * * * /path/to/script.sh
 ```
 
-This executes the script at `/path/to/script.sh` at 9:30 AM every day.
+При этом скрипт выполняется в `/path/to/script.sh` каждый день в 9:30 утра.
 
 ### Пример 3: Запуска сценария в определенные дни недели
 
-To schedule a script to run on specific days of the week, use the following crontab entry:
+Чтобы запланировать запуск скрипта на определенные дни недели, используйте следующую запись в crontab:
 
 ```plaintext
 0 10 * * 1,3,5 /path/to/script.sh
 ```
 
-This executes the script at `/path/to/script.sh` at 10:00 AM every Monday, Wednesday, and Friday.
+При этом скрипт выполняется в `/path/to/script.sh` в 10:00 утра каждый понедельник, среду и пятницу.
 
 ### Пример 4: Запуска сценария каждый месяц
 
-To schedule a script to run every month on a specific day, use the following crontab entry:
+Чтобы запланировать запуск скрипта каждый месяц на определенный день, используйте следующую запись в crontab:
 
 ```plaintext
 0 12 15 * * /path/to/script.sh
 ```
 
-This executes the script at `/path/to/script.sh` at 12:00 PM on the 15th day of every month.
+При этом скрипт запускается в `/path/to/script.sh` в 12:00 15-го числа каждого месяца.
 
 ### Пример 5: Запуска сценария сценарияс регулярными интервалами
 
-To schedule a script to run at regular intervals, such as every 10 minutes, use the following crontab entry:
+Чтобы запланировать запуск сценария с регулярными интервалами, например каждые 10 минут, используйте следующую запись в crontab:
 
 ```plaintext
 */10 * * * * /path/to/script.sh
 ```
 
-This executes the script at `/path/to/script.sh` every 10 minutes.
+При этом скрипт выполняется по адресу `/path/to/script.sh` каждые 10 минут.
 
 ## Управление записями в Crontab
 
-To manage your crontab entries, you can use the following commands:
+Для управления записями в crontab вы можете использовать следующие команды:
 
-- `crontab -e` - Edit the crontab file.
-- `crontab -l` - List existing crontab entries.
-- `crontab -r` - Remove all crontab entries.
+- `crontab -e` - Открывает файл crontab для редактирования.
+- `crontab -l` - Показывает существующие записи crontab.
+- `crontab -r` - Удаляем все из crontab.
 
 ## Вывод
 
-Crontab is a valuable tool for automating recurring tasks in Unix-like systems. With the examples provided in this cheat sheet, you can effectively schedule and manage your cron jobs. Remember to consider the syntax and time-sensitive details while creating your crontab entries.
+Crontab - это ценный инструмент для автоматизации повторяющихся задач в Unix-подобных системах. С помощью примеров, приведенных в этой инструкции, вы сможете эффективно планировать свои задания cron и управлять ими. При создании записей в crontab не забывайте учитывать синтаксис и детали, зависящие от времени.
 
 ## Ссылки на источники
 
