@@ -16,7 +16,7 @@ timezone:
 
 title: Артем Кирьянов # the main title
 
-tagline: DevOps  # it will display as the subtitle
+tagline: Заметки DevOps инженера  # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   Полезные заметки и статьи
