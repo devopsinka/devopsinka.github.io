@@ -1,0 +1,82 @@
+backend:
+  name: github
+  repo: devopsinka/devopsinka.github.io
+  branch: main
+  base_url: https://devopsme-cms-auth.vercel.app
+  auth_endpoint: api/auth
+  auth_scope: repo
+
+local_backend: true
+
+locale: ru
+media_folder: assets/uploads
+public_folder: /assets/uploads
+publish_mode: editorial_workflow
+
+collections:
+  - name: posts
+    label: Статьи
+    label_singular: Статья
+    folder: _posts
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "posts/{{slug}}/"
+    fields:
+      - label: Заголовок
+        name: title
+        widget: string
+      - label: Дата публикации
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD HH:mm:ss Z"
+        date_format: "YYYY-MM-DD"
+        time_format: "HH:mm:ss"
+      - label: Категории
+        name: categories
+        widget: list
+        default: [Блог, Инструкции]
+        field:
+          label: Категория
+          name: category
+          widget: string
+      - label: Теги
+        name: tags
+        widget: list
+        field:
+          label: Тег
+          name: tag
+          widget: string
+      - label: Закрепить
+        name: pin
+        widget: boolean
+        default: false
+        required: false
+      - label: MathJax
+        name: math
+        widget: boolean
+        default: true
+        required: false
+      - label: Mermaid
+        name: mermaid
+        widget: boolean
+        default: true
+        required: false
+      - label: Обложка
+        name: image
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - label: URL или путь
+            name: path
+            widget: string
+            required: false
+          - label: Alt-текст
+            name: alt
+            widget: string
+            required: false
+      - label: Текст статьи
+        name: body
+        widget: markdown

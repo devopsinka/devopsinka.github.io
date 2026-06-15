@@ -211,6 +211,7 @@ compress_html:
     envs: [development]
 
 exclude:
+  - api
   - "*.gem"
   - "*.gemspec"
   - docs
@@ -220,6 +221,7 @@ exclude:
   - purgecss.js
   - "*.config.js"
   - "package*.json"
+  - vercel.json
 
 jekyll-archives:
   enabled: [categories, tags]
