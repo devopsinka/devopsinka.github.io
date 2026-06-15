@@ -11,22 +11,26 @@ function verifyState(state) {
   const [data, signature] = String(state || '').split('.');
 
   if (!data || !signature) {
-    return false;
+    return null;
   }
 
   const expectedSignature = crypto.createHmac('sha256', secret).update(data).digest('base64url');
 
   if (signature !== expectedSignature) {
-    return false;
+    return null;
   }
 
   const payload = JSON.parse(Buffer.from(data, 'base64url').toString('utf8'));
   const maxAge = 10 * 60 * 1000;
 
-  return payload.provider === 'github' && Date.now() - payload.createdAt < maxAge;
+  if (payload.provider !== 'github' || Date.now() - payload.createdAt >= maxAge) {
+    return null;
+  }
+
+  return payload;
 }
 
-function renderMessagePage(baseUrl, provider, status, payload) {
+function renderMessagePage(targetOrigin, provider, status, payload) {
   const message = `authorization:${provider}:${status}:${JSON.stringify(payload)}`;
 
   return `<!doctype html>
@@ -44,7 +48,7 @@ function renderMessagePage(baseUrl, provider, status, payload) {
         };
 
         window.addEventListener('message', receiveMessage, false);
-        window.opener.postMessage('authorizing:${provider}', ${JSON.stringify(baseUrl)});
+        window.opener.postMessage('authorizing:${provider}', ${JSON.stringify(targetOrigin)});
       })();
     </script>
   </body>
@@ -55,6 +59,8 @@ module.exports = async (req, res) => {
   const clientId = process.env.GITHUB_CLIENT_ID;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
   const baseUrl = getBaseUrl(req);
+  const state = verifyState(req.query.state);
+  const targetOrigin = state && state.siteOrigin ? state.siteOrigin : 'https://devopsme.ru';
 
   if (!clientId || !clientSecret) {
     res.statusCode = 500;
@@ -62,9 +68,9 @@ module.exports = async (req, res) => {
     return;
   }
 
-  if (!verifyState(req.query.state)) {
+  if (!state) {
     res.statusCode = 400;
-    res.end(renderMessagePage(baseUrl, 'github', 'error', { message: 'Invalid OAuth state' }));
+    res.end(renderMessagePage(targetOrigin, 'github', 'error', { message: 'Invalid OAuth state' }));
     return;
   }
 
@@ -87,12 +93,12 @@ module.exports = async (req, res) => {
 
   if (!tokenData.access_token) {
     res.statusCode = 400;
-    res.end(renderMessagePage(baseUrl, 'github', 'error', tokenData));
+    res.end(renderMessagePage(targetOrigin, 'github', 'error', tokenData));
     return;
   }
 
   res.end(
-    renderMessagePage(baseUrl, 'github', 'success', {
+    renderMessagePage(targetOrigin, 'github', 'success', {
       token: tokenData.access_token,
       provider: 'github',
     }),

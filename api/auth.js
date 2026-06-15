@@ -6,6 +6,14 @@ function getBaseUrl(req) {
   return process.env.OAUTH_BASE_URL || `https://${req.headers.host}`;
 }
 
+function getSiteOrigin(siteId) {
+  if (!siteId) {
+    return null;
+  }
+
+  return siteId.startsWith('http') ? siteId : `https://${siteId}`;
+}
+
 function signState(payload) {
   const secret = process.env.GITHUB_CLIENT_SECRET;
   const data = Buffer.from(JSON.stringify(payload)).toString('base64url');
@@ -25,6 +33,7 @@ module.exports = (req, res) => {
 
   const provider = req.query.provider || 'github';
   const scope = req.query.scope || 'repo';
+  const siteOrigin = getSiteOrigin(req.query.site_id);
 
   if (provider !== 'github') {
     res.statusCode = 400;
@@ -34,7 +43,7 @@ module.exports = (req, res) => {
 
   const baseUrl = getBaseUrl(req);
   const redirectUri = `${baseUrl}/api/callback`;
-  const state = signState({ provider, scope, createdAt: Date.now() });
+  const state = signState({ provider, scope, siteOrigin, createdAt: Date.now() });
   const url = new URL(githubAuthorizeUrl);
 
   url.searchParams.set('client_id', clientId);
